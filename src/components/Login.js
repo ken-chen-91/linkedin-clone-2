@@ -1,31 +1,37 @@
 import styled from "styled-components";
+import {connect} from 'react-redux';
+import {signInAPI} from "../actions";
+import {Redirect} from "react-router"
 
 const Login = (props) => {
-  return (
-    <Container>
-      <Nav>
-        <a href="/">
-          <img src="/images/login-logo.svg" alt="" />
-        </a>
-        <div>
-          <Join>Join now</Join>
-          <SignIn>Sign in</SignIn>
-        </div>
-      </Nav>
-      <Section>
-        <Hero>
-          <h1>Welcome to your professional community</h1>
-          <img src="/images/login-hero.svg" alt="" />
-        </Hero>
-        <Form>
-          <Google>
-            <img src="/images/google.svg" alt="" />
-            Sign in with Google
-          </Google>
-        </Form>
-      </Section>
-    </Container>
-  );
+    return (
+        <Container>
+            {
+                props.user && <Redirect to="/home"/>
+            }
+            <Nav>
+                <a href="/">
+                    <img src="/images/login-logo.svg" alt=""/>
+                </a>
+                <div>
+                    <Join>Join now</Join>
+                    <SignIn>Sign in</SignIn>
+                </div>
+            </Nav>
+            <Section>
+                <Hero>
+                    <h1>Welcome to your professional community</h1>
+                    <img src="/images/login-hero.svg" alt=""/>
+                </Hero>
+                <Form>
+                    <Google onClick={() => props.signIn()}>
+                        <img src="/images/google.svg" alt=""/>
+                        Sign in with Google
+                    </Google>
+                </Form>
+            </Section>
+        </Container>
+    );
 };
 
 const Container = styled.div`
@@ -58,6 +64,7 @@ const Join = styled.a`
   border-radius: 4px;
   color: rgba(0, 0, 0, 0.6);
   margin-right: 12px;
+
   &:hover {
     background-color: rgba(0, 0, 0, 0.08);
     color: rgba(0, 0, 0, 0.9);
@@ -76,6 +83,7 @@ const SignIn = styled.a`
   padding: 10px 24px;
   text-align: center;
   background-color: rgba(0, 0, 0, 0);
+
   &:hover {
     background-color: rgba(112, 181, 249, 0.15);
     color: #0a66c2;
@@ -105,6 +113,7 @@ const Section = styled.section`
 
 const Hero = styled.div`
   width: 100%;
+
   h1 {
     padding-bottom: 0;
     width: 55%;
@@ -153,17 +162,34 @@ const Google = styled.button`
   width: 100%;
   border-radius: 28px;
   box-shadow: inset 0 0 0 1px rgb(0 0 0 / 60%),
-    inset 0 0 0 2px rgb(0 0 0 / 0%) inset 0 0 0 1px rgb(0 0 0 / 0);
+  inset 0 0 0 2px rgb(0 0 0 / 0%) inset 0 0 0 1px rgb(0 0 0 / 0);
 
   vertical-align: middle;
   z-index: 0;
   transition-duration: 167ms;
   font-size: 20px;
   color: rgba(0, 0, 0, 0.6);
+
   &:hover {
     background-color: rgba(207, 207, 207, 0.25);
     color: rgba(0, 0, 0, 0.75);
   }
 `;
 
-export default Login;
+const mapStateToProps = (state) => {
+    return {
+        user: state.userState.user
+    }
+}
+
+const mapDispatchToProps = (dispatch) => (
+    {
+        signIn: () => dispatch(signInAPI()),
+    }
+)
+
+
+// 第二对括号代表立刻执行前面的匿名函数，括号内的值会作为实参传递给匿名函数。
+// example =>  https://www.zhihu.com/question/48238548
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
+

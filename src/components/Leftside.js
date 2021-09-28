@@ -1,55 +1,56 @@
 import styled from "styled-components";
+import {connect} from "react-redux";
 
 const Leftside = (props) => {
-  return (
-    <Container>
-      <ArtCard>
-        <UserInfo>
-          <CardBackground />
-          <a>
-            <Photo />
-            <Link>Welcome, there!</Link>
-          </a>
-          <a>
-            <AddPhotoText>Add a photo</AddPhotoText>
-          </a>
-        </UserInfo>
-        <Widget>
-          <a>
-            <div>
-              <span>Connections</span>
-              <span>Grow your network</span>
-            </div>
-            <img src="/images/widget-icon.svg" alt="" />
-          </a>
-        </Widget>
-        <Item>
+    return (
+        <Container>
+            <ArtCard>
+                <UserInfo>
+                    <CardBackground/>
+                    <a>
+                        <Photo/>
+                        <Link>Welcome, {props.user ? props.user.displayName : "there"}!</Link>
+                    </a>
+                    <a>
+                        <AddPhotoText>Add a photo</AddPhotoText>
+                    </a>
+                </UserInfo>
+                <Widget>
+                    <a>
+                        <div>
+                            <span>Connections</span>
+                            <span>Grow your network</span>
+                        </div>
+                        <img src="/images/widget-icon.svg" alt=""/>
+                    </a>
+                </Widget>
+                <Item>
           <span>
-            <img src="/images/item-icon.svg" alt="" />
+            <img src="/images/item-icon.svg" alt=""/>
             My Items
           </span>
-        </Item>
-      </ArtCard>
+                </Item>
+            </ArtCard>
 
-      <CommunityCard>
-        <a>
-          <span>Groups</span>
-        </a>
-        <a>
+            <CommunityCard>
+                <a>
+                    <span>Groups</span>
+                </a>
+                <a>
           <span>
             Events
-            <img src="/images/plus-icon.svg" alt="" />
+            <img src="/images/plus-icon.svg" alt=""/>
           </span>
-        </a>
-        <a>
-          <span>Follow Hashtags</span>
-        </a>
-        <a>
-          <span>Discover more</span>
-        </a>
-      </CommunityCard>
-    </Container>
-  );
+                </a>
+                <a>
+                    <span>Follow Hashtags</span>
+                </a>
+                <a>
+                    <span>Discover more</span>
+                </a>
+            </CommunityCard>
+        </Container>
+    );
 };
 
 const Container = styled.div`
@@ -134,12 +135,15 @@ const Widget = styled.div`
       display: flex;
       flex-direction: column;
       text-align: left;
+
       span {
         font-size: 12px;
         line-height: 1.333;
+
         &:first-child {
           color: rgba(0, 0, 0, 0.6);
         }
+
         &:nth-child(2) {
           color: rgba(0, 0, 0, 1);
         }
@@ -158,10 +162,12 @@ const Item = styled.a`
   padding: 12px;
   font-size: 12px;
   display: block;
+
   span {
     display: flex;
     align-items: center;
     color: rgba(0, 0, 0, 1);
+
     svg {
       color: rgba(0, 0, 0, 0.6);
     }
@@ -177,6 +183,7 @@ const CommunityCard = styled(ArtCard)`
   text-align: left;
   display: flex;
   flex-direction: column;
+
   a {
     color: black;
     padding: 4px 12px 4px 12px;
@@ -198,6 +205,7 @@ const CommunityCard = styled(ArtCard)`
 
       border-top: 1px solid #d6cec2;
       padding: 12px;
+
       &:hover {
         background-color: rgba(0, 0, 0, 0.08);
       }
@@ -205,4 +213,14 @@ const CommunityCard = styled(ArtCard)`
   }
 `;
 
-export default Leftside;
+const mapStateToProps = (state) => {
+    return {
+        user: state.userState.user
+    }
+}
+
+// const mapDispatchToProps = (dispatch) => {
+//
+// }
+
+export default connect(mapStateToProps)(Leftside);
